@@ -1,0 +1,4 @@
+# Write your MySQL query statement below
+SELECT * FROM CINEMA C 
+WHERE C.ID%2 = 1 AND C.DESCRIPTION != 'BORING'
+ORDER BY C.RATING DESC;
