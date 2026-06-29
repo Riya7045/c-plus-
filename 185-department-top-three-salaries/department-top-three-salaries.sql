@@ -1,15 +1,13 @@
 # Write your MySQL query statement below
-SELECT Department, Employee, Salary
-FROM (
-    SELECT
-        d.Name AS Department,
-        e.Name AS Employee,
-        e.Salary,
-        DENSE_RANK() OVER (
-            PARTITION BY d.Name
-            ORDER BY e.Salary DESC
-        ) AS salary_rank
+WITH RankedSalaries AS (
+    SELECT 
+        d.name AS Department,
+        e.name AS Employee,
+        e.salary AS Salary,
+        DENSE_RANK() OVER (PARTITION BY e.departmentId ORDER BY e.salary DESC) as ranking
     FROM Employee e
-    JOIN Department d ON e.DepartmentId = d.Id
-) ranked
-WHERE salary_rank <= 3;
+    JOIN Department d ON e.departmentId = d.id
+)
+SELECT Department, Employee, Salary
+FROM RankedSalaries
+WHERE ranking <= 3;
